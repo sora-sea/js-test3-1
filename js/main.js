@@ -1,34 +1,46 @@
 'use strict'
 
 {
-  const btn = document.getElementById('btn');
-  let i = 0
+  const addBtn = document.getElementById('btn');
+  const newTask = document.getElementById('newtask');
+  const taskList = document.getElementById('tasklist');
+  const todos = [];
 
-  btn.addEventListener('click', () => {
+  const createStatusBtn = function(task) {
+    const statusBtn = document.createElement('button');
+    statusBtn.textContent = '作業中';
+    task.appendChild(statusBtn);
+  };
+  
+  const createDeleteBtn = function(task) {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '削除';
+    task.appendChild(deleteBtn);
+  };
 
-    const elemNewTask = document.getElementById('newtask');
-    const newTask = elemNewTask.value;
-    
-    const taskList = document.getElementById('tasklist');
-
-    const task = document.createElement('tr');
-    taskList.appendChild(task);
-
-    const taskId = document.createElement('td');
-    const taskComment = document.createElement('td');
-    const taskStatus = document.createElement('button');
-    const taskDelete = document.createElement('button');
-
-    taskId.textContent = i++;
-    taskComment.textContent = newTask;
-    taskStatus.textContent = '作業中';
-    taskDelete.textContent = '削除';
-
-    taskList.appendChild(taskId);
-    taskList.appendChild(taskComment);
-    taskList.appendChild(taskStatus);
-    taskList.appendChild(taskDelete);
-
-    elemNewTask.value = '';
+  const displayTodos = function(array) {
+    taskList.innerText = '';
+    array.forEach((el, index) => {
+      const task = document.createElement('tr');
+      taskList.appendChild(task);
+      const taskId = document.createElement('td');
+      const taskComment = document.createElement('td');
+      taskId.textContent = index;
+      taskComment.textContent = el.task;
+      task.appendChild(taskId);
+      task.appendChild(taskComment);
+      createStatusBtn(task);
+      createDeleteBtn(task);
+    });
+  };
+  
+  addBtn.addEventListener('click', () => {
+    const todo = {
+      task: newTask.value,
+      status: '作業中'
+    };
+    todos.push(todo);
+    displayTodos(todos);
+    newTask.value = '';
   });
 }
